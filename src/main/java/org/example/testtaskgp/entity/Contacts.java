@@ -1,13 +1,11 @@
 package org.example.testtaskgp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.List;
-
-@Entity
+@Embeddable
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,11 +13,10 @@ import java.util.List;
 @Builder
 public class Contacts {
 
-    private List<String> phone;
+    @NotNull
+    private String phone;
 
-    private List<String> email;
-
-    @OneToOne
-    @JoinColumn(name = "hotel_id", unique = true)
-    private Hotel hotel;
+    @NotNull
+    @Email
+    private String email;
 }

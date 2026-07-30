@@ -35,6 +35,9 @@ public class Hotel {
     @Embedded
     private Contacts contacts;
 
+    @Embedded
+    private ArrivalTime arrivalTime;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Amenities> amenities;
