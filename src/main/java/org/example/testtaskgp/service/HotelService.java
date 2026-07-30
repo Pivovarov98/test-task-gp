@@ -1,0 +1,101 @@
+package org.example.testtaskgp.service;
+
+import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
+import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
+import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
+import org.example.testtaskgp.entity.Address;
+import org.example.testtaskgp.entity.ArrivalTime;
+import org.example.testtaskgp.entity.Contacts;
+import org.example.testtaskgp.entity.Hotel;
+import org.example.testtaskgp.entity.enums.Amenities;
+import org.example.testtaskgp.exception.HotelNotFoundException;
+import org.example.testtaskgp.repository.HotelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class HotelService {
+
+    @Autowired
+    private HotelRepository hotelRepository;
+
+    public HotelShortResponseDTO createHotel(HotelCreateDTO dto) {
+
+        Hotel hotel = Hotel.builder()
+                .name(dto.name())
+                .description(dto.description())
+                .brand(dto.brand())
+                .address(Address.builder()
+                        .houseNumber(dto.address().houseNumber())
+                        .country(dto.address().country())
+                        .city(dto.address().city())
+                        .street(dto.address().street())
+                        .postcode(dto.address().postCode())
+                        .build())
+                .contacts(Contacts.builder()
+                        .phone(dto.contacts().phone())
+                        .email(dto.contacts().email())
+                        .build())
+                .arrivalTime(ArrivalTime.builder()
+                        .checkIn(dto.arrivalTime().checkIn())
+                        .checkOut(dto.arrivalTime().checkOut())
+                        .build())
+                .amenities(dto.amenities())
+                .build();
+
+        hotelRepository.save(hotel);
+
+        return shortResponse(hotel);
+    }
+
+    public List<HotelShortResponseDTO> getAllHotels() {
+        return hotelRepository.findAll()
+                .stream()
+                .map(this::shortResponse)
+                .toList();
+    }
+
+    public HotelFullResponseDTO getHotelById(Long hotel_id) {
+        return fullResponse(hotelRepository.findById(hotel_id)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel not found")));
+    }
+
+    private HotelFullResponseDTO fullResponse(Hotel hotel) {
+        return HotelFullResponseDTO.builder()
+                .id(hotel.getId())
+                .name(hotel.getName())
+                .description(hotel.getDescription())
+                .brand(hotel.getBrand().getMessage())
+                .address(hotel.getAddress())
+                .contacts(hotel.getContacts())
+                .arrivalTime(hotel.getArrivalTime())
+                .amenities(hotel.getAmenities()
+                        .stream()
+                        .map(this::amenitiesMessage)
+                        .toList())
+                .build();
+    }
+
+    private HotelShortResponseDTO shortResponse(Hotel hotel) {
+        return HotelShortResponseDTO.builder()
+                .id(hotel.getId())
+                .name(hotel.getName())
+                .description(hotel.getDescription())
+                .address(String.format(
+                        "%s %s, %s, %d, %s",
+                        hotel.getAddress().getHouseNumber(),
+                        hotel.getAddress().getStreet(),
+                        hotel.getAddress().getCity(),
+                        hotel.getAddress().getPostcode(),
+                        hotel.getAddress().getCountry()
+                ))
+                .phone(hotel.getContacts().getPhone())
+                .build();
+    }
+
+    private String amenitiesMessage(Amenities amenities) {
+        return amenities.getMessage();
+    }
+}
