@@ -1,8 +1,5 @@
 package org.example.testtaskgp.entity.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum Brand {
     MARRIOTT("Marriott International"),
     JIN_JIANG("Jin Jiang International"),
@@ -12,7 +9,11 @@ public enum Brand {
 
     private final String brand;
 
-    Brand(String brand){
+    Brand(String brand) {
         this.brand = brand;
+    }
+
+    public String getMessage() {
+        return brand;
     }
 }

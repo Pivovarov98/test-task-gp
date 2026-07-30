@@ -1,8 +1,5 @@
 package org.example.testtaskgp.entity.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum Amenities {
     FREE_PARKING("Free parking"),
     FREE_WIFI("Free WiFi"),
@@ -17,7 +14,11 @@ public enum Amenities {
 
     private final String amenities;
 
-    Amenities(String amenities){
+    Amenities(String amenities) {
         this.amenities = amenities;
+    }
+
+    public String getMessage() {
+        return amenities;
     }
 }
