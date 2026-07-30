@@ -3,6 +3,7 @@ package org.example.testtaskgp.service;
 import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
+import org.example.testtaskgp.dto.hotel.search.HotelSearchFilter;
 import org.example.testtaskgp.entity.Address;
 import org.example.testtaskgp.entity.ArrivalTime;
 import org.example.testtaskgp.entity.Contacts;
@@ -10,7 +11,9 @@ import org.example.testtaskgp.entity.Hotel;
 import org.example.testtaskgp.entity.enums.Amenities;
 import org.example.testtaskgp.exception.HotelNotFoundException;
 import org.example.testtaskgp.repository.HotelRepository;
+import org.example.testtaskgp.repository.HotelSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,6 +63,21 @@ public class HotelService {
     public HotelFullResponseDTO getHotelById(Long hotel_id) {
         return fullResponse(hotelRepository.findById(hotel_id)
                 .orElseThrow(() -> new HotelNotFoundException("Hotel not found")));
+    }
+
+    public List<HotelShortResponseDTO> search(HotelSearchFilter filter) {
+
+        Specification<Hotel> specification = Specification
+                .where(HotelSpecification.hasName(filter.name()))
+                .and(HotelSpecification.hasBrand(filter.brand()))
+                .and(HotelSpecification.hasCity(filter.city()))
+                .and(HotelSpecification.hasCountry(filter.country()))
+                .and(HotelSpecification.hasAmenities(filter.amenities()));
+
+        return hotelRepository.findAll(specification)
+                .stream()
+                .map(this::shortResponse)
+                .toList();
     }
 
     private HotelFullResponseDTO fullResponse(Hotel hotel) {
