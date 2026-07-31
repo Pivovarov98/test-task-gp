@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class HotelService {
                         .checkIn(dto.arrivalTime().checkIn())
                         .checkOut(dto.arrivalTime().checkOut())
                         .build())
-                .amenities(dto.amenities())
+                .amenities(new ArrayList<>())
                 .build();
 
         hotelRepository.save(hotel);
@@ -85,7 +86,7 @@ public class HotelService {
                 .id(hotel.getId())
                 .name(hotel.getName())
                 .description(hotel.getDescription())
-                .brand(hotel.getBrand().getMessage())
+                .brand(hotel.getBrand().getBrandName())
                 .address(hotel.getAddress())
                 .contacts(hotel.getContacts())
                 .arrivalTime(hotel.getArrivalTime())
