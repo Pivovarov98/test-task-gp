@@ -1,5 +1,6 @@
 package org.example.testtaskgp.service;
 
+import org.example.testtaskgp.dto.hotel.create_update.AmenitiesDTO;
 import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
@@ -52,6 +53,20 @@ public class HotelService {
         hotelRepository.save(hotel);
 
         return shortResponse(hotel);
+    }
+
+    public HotelFullResponseDTO addAmenities(Long hotel_id, AmenitiesDTO dto) {
+
+        Hotel hotel = hotelRepository.findById(hotel_id)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel not found"));
+
+        for (Amenities amenities : dto.amenities()) {
+            hotel.getAmenities().add(amenities);
+        }
+
+        hotelRepository.save(hotel);
+
+        return fullResponse(hotel);
     }
 
     public List<HotelShortResponseDTO> getAllHotels() {
@@ -115,6 +130,6 @@ public class HotelService {
     }
 
     private String amenitiesMessage(Amenities amenities) {
-        return amenities.getMessage();
+        return amenities.getAmenities();
     }
 }
