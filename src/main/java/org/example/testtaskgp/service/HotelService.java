@@ -4,6 +4,7 @@ import org.example.testtaskgp.dto.hotel.create_update.AmenitiesDTO;
 import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
+import org.example.testtaskgp.dto.hotel.search.HistogramParam;
 import org.example.testtaskgp.dto.hotel.search.HotelSearchFilter;
 import org.example.testtaskgp.entity.Address;
 import org.example.testtaskgp.entity.ArrivalTime;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService {
@@ -96,6 +100,15 @@ public class HotelService {
                 .toList();
     }
 
+    public Map<String, Long> getHistogram(HistogramParam param) {
+        return switch (param) {
+            case BRAND -> toMap(hotelRepository.countHotelsByBrand());
+            case CITY -> toMap(hotelRepository.countHotelsByCity());
+            case COUNTRY -> toMap(hotelRepository.countHotelsByCountry());
+            case AMENITIES -> toMap(hotelRepository.countHotelsByAmenities());
+        };
+    }
+
     private HotelFullResponseDTO fullResponse(Hotel hotel) {
         return HotelFullResponseDTO.builder()
                 .id(hotel.getId())
@@ -131,5 +144,13 @@ public class HotelService {
 
     private String amenitiesMessage(Amenities amenities) {
         return amenities.getAmenities();
+    }
+
+    private Map<String, Long> toMap(List<Object[]> rows) {
+        return rows.stream()
+                .collect(Collectors.toMap(
+                        row -> row[0].toString(),
+                        row -> (Long) row[1]
+                ));
     }
 }
