@@ -1,5 +1,11 @@
 package org.example.testtaskgp.entity.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.example.testtaskgp.exception.UnknownAmenitiesException;
+
+import java.util.Arrays;
+
 public enum Amenities {
     FREE_PARKING("Free parking"),
     FREE_WIFI("Free WiFi"),
@@ -18,7 +24,16 @@ public enum Amenities {
         this.amenities = amenities;
     }
 
-    public String getMessage() {
+    @JsonValue
+    public String getAmenities() {
         return amenities;
+    }
+
+    @JsonCreator
+    public static Amenities fromAmenities(String amenities) {
+        return Arrays.stream(values())
+                .filter(a -> a.amenities.equalsIgnoreCase(amenities))
+                .findFirst()
+                .orElseThrow(() -> new UnknownAmenitiesException("Unknown amenities: " + amenities));
     }
 }
