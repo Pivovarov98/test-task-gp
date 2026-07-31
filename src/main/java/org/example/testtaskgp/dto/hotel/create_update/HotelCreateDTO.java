@@ -2,12 +2,8 @@ package org.example.testtaskgp.dto.hotel.create_update;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.example.testtaskgp.entity.enums.Amenities;
 import org.example.testtaskgp.entity.enums.Brand;
-
-import java.util.List;
 
 public record HotelCreateDTO(
         @NotBlank
@@ -29,9 +25,6 @@ public record HotelCreateDTO(
 
         @Valid
         @NotNull
-        ArrivalTimeDTO arrivalTime,
-
-        @NotEmpty
-        List<Amenities> amenities
+        ArrivalTimeDTO arrivalTime
 ) {
 }
