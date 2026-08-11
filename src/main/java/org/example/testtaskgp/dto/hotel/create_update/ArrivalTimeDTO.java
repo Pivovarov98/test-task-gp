@@ -10,7 +10,6 @@ public record ArrivalTimeDTO(
         @JsonFormat(pattern = "HH:mm")
         LocalTime checkIn,
 
-        @NotNull
         @JsonFormat(pattern = "HH:mm")
         LocalTime checkOut
 ) {
