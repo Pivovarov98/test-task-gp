@@ -1,6 +1,5 @@
 package org.example.testtaskgp.service;
 
-import org.example.testtaskgp.dto.hotel.create_update.AmenitiesDTO;
 import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
@@ -10,7 +9,6 @@ import org.example.testtaskgp.entity.Address;
 import org.example.testtaskgp.entity.ArrivalTime;
 import org.example.testtaskgp.entity.Contacts;
 import org.example.testtaskgp.entity.Hotel;
-import org.example.testtaskgp.entity.enums.Amenities;
 import org.example.testtaskgp.exception.HotelNotFoundException;
 import org.example.testtaskgp.repository.HotelRepository;
 import org.example.testtaskgp.repository.HotelSpecification;
@@ -40,7 +38,7 @@ public class HotelService {
                         .country(dto.address().country())
                         .city(dto.address().city())
                         .street(dto.address().street())
-                        .postcode(dto.address().postCode())
+                        .postCode(dto.address().postCode())
                         .build())
                 .contacts(Contacts.builder()
                         .phone(dto.contacts().phone())
@@ -58,14 +56,12 @@ public class HotelService {
         return shortResponse(hotel);
     }
 
-    public HotelFullResponseDTO addAmenities(Long hotel_id, AmenitiesDTO dto) {
+    public HotelFullResponseDTO addAmenities(Long hotel_id, List<String> amenities) {
 
         Hotel hotel = hotelRepository.findById(hotel_id)
                 .orElseThrow(() -> new HotelNotFoundException("Hotel not found"));
 
-        for (Amenities amenities : dto.amenities()) {
-            hotel.getAmenities().add(amenities);
-        }
+        hotel.getAmenities().addAll(amenities);
 
         hotelRepository.save(hotel);
 
@@ -113,14 +109,11 @@ public class HotelService {
                 .id(hotel.getId())
                 .name(hotel.getName())
                 .description(hotel.getDescription())
-                .brand(hotel.getBrand().getBrandName())
+                .brand(hotel.getBrand())
                 .address(hotel.getAddress())
                 .contacts(hotel.getContacts())
                 .arrivalTime(hotel.getArrivalTime())
-                .amenities(hotel.getAmenities()
-                        .stream()
-                        .map(this::amenitiesMessage)
-                        .toList())
+                .amenities(hotel.getAmenities())
                 .build();
     }
 
@@ -134,15 +127,11 @@ public class HotelService {
                         hotel.getAddress().getHouseNumber(),
                         hotel.getAddress().getStreet(),
                         hotel.getAddress().getCity(),
-                        hotel.getAddress().getPostcode(),
+                        hotel.getAddress().getPostCode(),
                         hotel.getAddress().getCountry()
                 ))
                 .phone(hotel.getContacts().getPhone())
                 .build();
-    }
-
-    private String amenitiesMessage(Amenities amenities) {
-        return amenities.getAmenities();
     }
 
     private Map<String, Long> toMap(List<Object[]> rows) {
