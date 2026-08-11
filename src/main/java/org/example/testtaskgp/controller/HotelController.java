@@ -43,7 +43,7 @@ public class HotelController {
     }
 
     @PostMapping("/hotels")
-    public ResponseEntity<HotelShortResponseDTO> createHotel(@RequestBody HotelCreateDTO dto) {
+    public ResponseEntity<HotelShortResponseDTO> createHotel(@Valid @RequestBody HotelCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(hotelService.createHotel(dto));
     }
 
