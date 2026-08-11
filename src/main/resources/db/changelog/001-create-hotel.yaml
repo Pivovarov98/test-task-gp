@@ -1,10 +1,9 @@
 databaseChangeLog:
   - changeSet:
-      id: 001-create-hotel
+      id: 1
       author: egor
 
       changes:
-
         - createTable:
             tableName: hotel
             columns:
@@ -25,15 +24,17 @@ databaseChangeLog:
               - column:
                   name: description
                   type: VARCHAR(1000)
-                  constraints:
-                    nullable: false
 
               - column:
                   name: brand
+                  type: VARCHAR(255)
+
+              - column:
+                  name: house_number
                   type: VARCHAR(50)
 
               - column:
-                  name: country
+                  name: street
                   type: VARCHAR(255)
 
               - column:
@@ -41,12 +42,20 @@ databaseChangeLog:
                   type: VARCHAR(255)
 
               - column:
-                  name: street
+                  name: country
                   type: VARCHAR(255)
 
               - column:
-                  name: postcode
-                  type: INT
+                  name: post_code
+                  type: VARCHAR(20)
+
+              - column:
+                  name: phone
+                  type: VARCHAR(50)
+
+              - column:
+                  name: email
+                  type: VARCHAR(255)
 
               - column:
                   name: check_in
@@ -55,30 +64,3 @@ databaseChangeLog:
               - column:
                   name: check_out
                   type: TIME
-
-        - createTable:
-            tableName: hotel_amenities
-            columns:
-              - column:
-                  name: hotel_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-
-              - column:
-                  name: amenity
-                  type: VARCHAR(100)
-                  constraints:
-                    nullable: false
-
-        - addPrimaryKey:
-            tableName: hotel_amenities
-            columnNames: hotel_id, amenity
-            constraintName: pk_hotel_amenities
-
-        - addForeignKeyConstraint:
-            baseTableName: hotel_amenities
-            baseColumnNames: hotel_id
-            referencedTableName: hotel
-            referencedColumnNames: id
-            constraintName: fk_hotel_amenities
