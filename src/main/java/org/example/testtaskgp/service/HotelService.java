@@ -61,7 +61,11 @@ public class HotelService {
         Hotel hotel = hotelRepository.findById(hotel_id)
                 .orElseThrow(() -> new HotelNotFoundException("Hotel not found"));
 
-        hotel.getAmenities().addAll(amenities);
+        for (String amenity : amenities) {
+            if (!hotel.getAmenities().contains(amenity)) {
+                hotel.getAmenities().add(amenity);
+            }
+        }
 
         hotelRepository.save(hotel);
 

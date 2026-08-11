@@ -36,5 +36,6 @@ public class Hotel {
     private ArrivalTime arrivalTime;
 
     @ElementCollection
+    @OrderColumn(name = "amenity_order")
     private List<String> amenities;
 }
