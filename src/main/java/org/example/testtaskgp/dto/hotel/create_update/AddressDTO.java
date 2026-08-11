@@ -16,6 +16,6 @@ public record AddressDTO(
         String country,
 
         @NotBlank
-        Integer postCode
+        String postCode
 ) {
 }

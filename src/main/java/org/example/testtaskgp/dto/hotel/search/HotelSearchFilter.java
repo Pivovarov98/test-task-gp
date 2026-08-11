@@ -1,7 +1,5 @@
 package org.example.testtaskgp.dto.hotel.search;
 
-import org.example.testtaskgp.entity.enums.Amenities;
-
 import java.util.List;
 
 public record HotelSearchFilter(
@@ -9,4 +7,4 @@ public record HotelSearchFilter(
         String brand,
         String city,
         String country,
-        List<Amenities> amenities) {}
+        List<String> amenities) {}

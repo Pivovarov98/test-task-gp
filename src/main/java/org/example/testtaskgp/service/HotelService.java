@@ -123,7 +123,7 @@ public class HotelService {
                 .name(hotel.getName())
                 .description(hotel.getDescription())
                 .address(String.format(
-                        "%s %s, %s, %d, %s",
+                        "%s %s, %s, %s, %s",
                         hotel.getAddress().getHouseNumber(),
                         hotel.getAddress().getStreet(),
                         hotel.getAddress().getCity(),
