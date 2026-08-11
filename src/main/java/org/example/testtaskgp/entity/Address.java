@@ -26,5 +26,5 @@ public class Address {
     private String country;
 
     @NotNull
-    private Integer postcode;
+    private Integer postCode;
 }
