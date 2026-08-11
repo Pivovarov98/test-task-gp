@@ -3,8 +3,6 @@ package org.example.testtaskgp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.example.testtaskgp.entity.enums.Amenities;
-import org.example.testtaskgp.entity.enums.Brand;
 
 import java.util.List;
 
@@ -23,11 +21,10 @@ public class Hotel {
     @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Brand brand;
+    @NotBlank
+    private String brand;
 
     @Embedded
     private Address address;
@@ -39,6 +36,5 @@ public class Hotel {
     private ArrivalTime arrivalTime;
 
     @ElementCollection
-    @Enumerated(EnumType.STRING)
-    private List<Amenities> amenities;
+    private List<String> amenities;
 }
