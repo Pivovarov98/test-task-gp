@@ -8,7 +8,6 @@ public record HotelCreateDTO(
         @NotBlank
         String name,
 
-        @NotBlank
         String description,
 
         @NotNull
