@@ -1,6 +1,6 @@
 package org.example.testtaskgp.controller;
 
-import org.example.testtaskgp.dto.hotel.create_update.AmenitiesDTO;
+import jakarta.validation.Valid;
 import org.example.testtaskgp.dto.hotel.create_update.HotelCreateDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelFullResponseDTO;
 import org.example.testtaskgp.dto.hotel.response.HotelShortResponseDTO;
@@ -49,7 +49,7 @@ public class HotelController {
 
     @PostMapping("/hotels/{id}/amenities")
     public ResponseEntity<HotelFullResponseDTO> addAmenities(@PathVariable Long id,
-                                                             @RequestBody AmenitiesDTO dto) {
-        return ResponseEntity.ok().body(hotelService.addAmenities(id, dto));
+                                                             @RequestBody List<String> amenities) {
+        return ResponseEntity.ok().body(hotelService.addAmenities(id, amenities));
     }
 }
